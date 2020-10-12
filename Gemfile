@@ -11,6 +11,7 @@ gem 'shotgun'
 gem 'pry'
 gem 'bcrypt'
 gem 'tux'
+gem 'bigdecimal', '1.3.5'
 
 group :test do
   gem 'rspec'
