@@ -1,9 +1,14 @@
 
-
-
 <h4><%= @post.title %></h4>
     <h4> Image goes here: </h4>
+    <br><br>
     <strong> Created at: <%= @post.created_at %></strong>
     <p><%= @post.description %></p>
     <p><%= @post.user.name %></p>
+
+    <a href="/posts/<%= @post.id %>/edit">Edit Post</a>
         
+    <form method="post" action="/posts/<%= @post.id %>" >
+        Name: <input type="hidden" name="_method" value="delete">
+        <input type="submit" value="Delete this Review">
+    </form>
