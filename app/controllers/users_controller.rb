@@ -22,10 +22,8 @@ class UsersController < ApplicationController
     end
 
     get '/users/:id' do
-        
-        "user profile!"
-        @user = User.find_by(id: session[:id])
-
+        @user = User.find_by(id: params[:id])
+    
         erb :'/users/show'
     end
 
