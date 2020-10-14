@@ -1,23 +1,39 @@
 class PostsController < ApplicationController
 
-    # CRUD
-
-
-
-
-
     # CREATE
 
     get '/posts/new' do
+        if logged_in?
+            # a user is only authorized to post if they are logged in
+            erb :'/posts/new'
+        else
+            # flash error
+            flash[:error] = "You must be logged in to review!"
+            # redirect to homepage so the user may log in
+            redirect "/"
+        end
 
-        erb :'/posts/new'
     end
 
     post '/posts' do
-        post = Post.create(title: params[:title], description: params[:description],
-        image_url: params[:image_url], user_id: current_user.id)    
-        
-        redirect "/posts/#{post.id}"
+        # create a post and persist to database
+        post = Post.new(title: params[:title], description: params[:description],
+        image_url: params[:image_url], user_id: current_user.id)
+
+        # create a post and persist to database
+        # .save triggers the validation, so we know that if the post saves, it is valid and all fields are filled in.
+        if post.save
+            # flash a success message that the post was created successfully
+            flash[:message] = "Your post was created successfully. Great job!" 
+            # redirect to post show page
+            redirect "/posts/#{post.id}"
+        else
+            # flash an error message of post creation failure
+            flash[:error] = "Post creation failed: #{post.errors.full_messages.to_sentence}"
+            # redirect to post creation page so the user may try again
+            redirect "/posts/new"
+        end
+
     end
 
     # READ Functionality needs CREATE to go first

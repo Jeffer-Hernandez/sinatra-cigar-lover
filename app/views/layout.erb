@@ -18,15 +18,26 @@
 
     <div class="wrapper">
 
-      <div class="nav">
-        <% if logged_in? %>
 
+      <% if flash[:message]%>
+      <h3 style="color:green;"><%= flash[:message] %></h3>
+      <% end %>
+
+
+      <% if flash[:error]%>
+      <h3 style="color:red;"><%= flash[:error] %></h3>
+      <% end %>
+    
+
+      <div class="nav">
+
+        <% if logged_in? %>
         <a href="/">Home</a>
         <a href="/posts">All Posts</a>
         <a href="/posts/new">Create a Post</a>
         <a href="/logout">Logout</a>
-
         <% end %>
+
       </div>
 
         <%= yield %>
