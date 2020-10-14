@@ -56,20 +56,16 @@ class PostsController < ApplicationController
 
 
     # UPDATE
-    # need to have Rack::MethodOverrride in config.ru to make Patch and Delete requests
+    # This route will only be triggered if a user is authorized to update or delete a post
+    # The conditional statement is on the 'post/show' page
     get '/posts/:id/edit' do
         # find post in question from the database and create and instance variable
         @post = Post.find(params[:id])
-        # conditional statement to validate if the user is authorized to edit this specific post
-        if authorized_to_edit?(@post) 
-            # redirect to post edit form
-            erb :'/posts/edit'
-        else
-            # redirect back the post
-            redirect "/posts/#{@post.id}"
-        end
+        # render to post edit form
+        erb :'/posts/edit'  
     end
 
+    # Need to have Rack::MethodOverrride in config.ru to make Patch and Delete requests
     patch '/posts/:id' do
         # find correct post to edit
         @post = Post.find(params[:id])
