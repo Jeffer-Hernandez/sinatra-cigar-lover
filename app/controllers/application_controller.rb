@@ -33,9 +33,13 @@ class ApplicationController < Sinatra::Base
     # keeps track of logged in user
     def current_user
       User.find_by(id: session[:user_id])
-
     end
 
+    # create an authorization helper for update and delete
+    # if the post's user is the same as the current user, they are authorized to update and delete
+    def authorized_to_edit?(post)
+      post.user == current_user
+    end
 
   end
 

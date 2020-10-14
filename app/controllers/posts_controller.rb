@@ -58,10 +58,16 @@ class PostsController < ApplicationController
     # UPDATE
     # need to have Rack::MethodOverrride in config.ru to make Patch and Delete requests
     get '/posts/:id/edit' do
-        # find correct post to render in form for edit.
+        # find post in question from the database and create and instance variable
         @post = Post.find(params[:id])
-
-        erb :'/posts/edit'
+        # conditional statement to validate if the user is authorized to edit this specific post
+        if authorized_to_edit?(@post) 
+            # redirect to post edit form
+            erb :'/posts/edit'
+        else
+            # redirect back the post
+            redirect "/posts/#{@post.id}"
+        end
     end
 
     patch '/posts/:id' do
