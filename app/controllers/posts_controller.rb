@@ -71,12 +71,14 @@ class PostsController < ApplicationController
         # find correct post to edit
         @post = Post.find(params[:id])
 
-        if @post.user.id == current_user.id
+        # conditional that prevents hacking
+        if authorized_to_edit?(@post)
             # use update to take edits from params and update the post in the database
             @post.update(title: params[:title], description: params[:description],
             image_url: params[:image_url]) 
         else
-            flash[:error] = "You are not authorized!"
+            # flash error
+            flash[:error] = "You can not edit a review that is not yours!"
         end
 
         # redirect to show page to view updated post
