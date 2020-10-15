@@ -67,13 +67,21 @@ class PostsController < ApplicationController
 
     # Need to have Rack::MethodOverrride in config.ru to make Patch and Delete requests
     patch '/posts/:id' do
+        
         # find correct post to edit
         @post = Post.find(params[:id])
-        # use update to take edits from params and update the post in the database
-        @post.update(title: params[:title], description: params[:description],
-        image_url: params[:image_url]) 
+
+        if @post.user.id == current_user.id
+            # use update to take edits from params and update the post in the database
+            @post.update(title: params[:title], description: params[:description],
+            image_url: params[:image_url]) 
+        else
+            flash[:error] = "You are not authorized!"
+        end
+
         # redirect to show page to view updated post
-        redirect "/posts/#{@post.id}"
+        redirect "/posts/#{@post.id}"           
+   
     end
 
     # DELETE
